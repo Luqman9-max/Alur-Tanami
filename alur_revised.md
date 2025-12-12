@@ -1,3 +1,5 @@
+# Activity Diagram Aktivitas Utama & Petani
+
 ```mermaid
 graph TB
     %% ================== PEMBELI ==================
@@ -115,3 +117,77 @@ graph TB
     class S1,S2,S3,S4,S5,S6,S7,S8,S9,S10,S11,S12,S13,S14 box;
     class F0,F1,F2a,F2b,F2c,F3,F4,F5,F6,F7,F8,F9,F10,F11,F12 box;
 ```
+
+# Activity Diagram Admin
+
+```mermaid
+graph TB
+    subgraph Admin["👨‍💼 ADMIN (OPERATOR)"]
+        A1[Start] --> A2[Login Admin]
+        A2 --> A3[Dashboard Admin]
+        A3 --> A4{Pilih Menu}
+        
+        A4 -->|Kelola Ongkir| A5[Lihat Daftar Kota]
+        A5 --> A6{Aksi?}
+        A6 -->|Tambah| A7[Input Nama Kota<br/>& Tarif]
+        A6 -->|Edit| A8[Update Harga Ongkir]
+        
+        A4 -->|Kelola Kupon| A9[Lihat Daftar Kupon]
+        A9 --> A10{Aksi?}
+        A10 -->|Buat Baru| A11[Input Kode, Diskon<br/>& Expired Date]
+        A10 -->|Nonaktifkan| A12[Set Status: Inactive]
+        
+        A4 -->|Monitoring| A13[Lihat Semua Order]
+        A13 --> A14[Filter & Export Data]
+        
+        A4 -->|Verifikasi Petani| A15[Lihat Pengajuan Petani]
+        A15 --> A16{Approve<br/>Akun?}
+        A16 -->|Ya| A17[Aktifkan Akun Petani]
+        A16 -->|Tidak| A18[Tolak dengan Alasan]
+        
+        A7 --> A19[Kembali ke Dashboard]
+        A8 --> A19
+        A11 --> A19
+        A12 --> A19
+        A14 --> A19
+        A17 --> A19
+        A18 --> A19
+        A19 --> A20[End]
+    end
+    
+    subgraph Sistem["⚙️ SISTEM"]
+        B1[Validasi Data Input]
+        B2{Data Valid?}
+        B3[Simpan ke Database]
+        B4[Tampilkan Error]
+        B5{Berhasil<br/>Disimpan?}
+        B6[Tampilkan Pesan Sukses]
+        B7[Send Notifikasi<br/>jika diperlukan]
+        B8[Update Cache<br/>Master Data]
+    end
+    
+    A7 --> B1
+    A8 --> B1
+    A11 --> B1
+    A12 --> B1
+    A17 --> B1
+    A18 --> B1
+    
+    B1 --> B2
+    B2 -->|Ya| B3
+    B2 -->|Tidak| B4
+    B4 --> A19
+    B3 --> B5
+    B5 -->|Ya| B6
+    B5 -->|Tidak| B4
+    B6 --> B7
+    B7 --> B8
+    B8 --> A19
+    
+%% STYLE
+style A1 fill:#000,stroke:#000,color:#fff
+style A20 fill:#000,stroke:#000,color:#fff
+
+classDef white fill:#fff,stroke:#000,color:#000;
+class A2,A3,A4,A5,A7,A8,A9,A11,A12,A13,A14,A15,A17,A18,A19 white;
+class B1,B3,B4,B6,B7,B8 white;
