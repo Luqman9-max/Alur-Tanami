@@ -1,4 +1,4 @@
-# Activity Diagram: Aktivitas Utama & Petani
+# Activity Diagram TANAMI
 ```mermaid
 graph TB
     %% ================== PEMBELI ==================
